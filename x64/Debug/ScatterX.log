@@ -1,0 +1,3 @@
+﻿  App.cpp
+D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp(391,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  ScatterX.vcxproj -> D:\Berk\Projects\ScatterX\ScatterX\x64\Debug\ScatterX.exe

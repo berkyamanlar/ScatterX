@@ -1,0 +1,212 @@
+﻿  Compiling CUDA source file main.cpp...
+  
+  D:\Berk\Projects\ScatterX\ScatterX>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\bin\nvcc.exe" -gencode=arch=compute_75,code=\"sm_75,compute_75\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\HostX64\x64" -x cu   -Iimgui -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include"     --keep-dir x64\Release  -maxrregcount=0   --machine 64 --compile -cudart static    -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /FS   /MD " -Xcompiler "/Fdx64\Release\vc143.pdb" -o D:\Berk\Projects\ScatterX\ScatterX\x64\Release\main.cpp.obj "D:\Berk\Projects\ScatterX\ScatterX\main.cpp" 
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(94): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		           ^
+  
+  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(94): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(95): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(95): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(143): warning #20012-D: __device__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<2, T, Q> & operator=(vec const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec2.hpp(143): warning #20012-D: __host__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<2, T, Q> & operator=(vec const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(98): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(98): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(99): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(99): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(176): warning #20012-D: __device__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<3, T, Q>& operator=(vec<3, T, Q> const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec3.hpp(176): warning #20012-D: __host__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<3, T, Q>& operator=(vec<3, T, Q> const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(97): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(97): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(98): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec<4, T, Q> const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(98): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec<4, T, Q> const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(249): warning #20012-D: __device__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<4, T, Q>& operator=(vec<4, T, Q> const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_vec4.hpp(249): warning #20012-D: __host__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<4, T, Q>& operator=(vec<4, T, Q> const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x2.hpp(35): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x2.hpp(35): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x3.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x3.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x4.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat2x4.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x2.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x2.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x3.hpp(35): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x3.hpp(35): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x4.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat3x4.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x2.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x2.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x3.hpp(36): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x3.hpp(36): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x4.hpp(35): warning #20012-D: __device__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_mat4x4.hpp(35): warning #20012-D: __host__ annotation is ignored on a function("mat") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  mat() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(95): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(95): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(96): warning #20012-D: __device__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(96): warning #20012-D: __host__ annotation is ignored on a function("vec") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec(vec const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(132): warning #20012-D: __device__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<1, T, Q> & operator=(vec const& v) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\detail/type_vec1.hpp(132): warning #20012-D: __host__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  vec<1, T, Q> & operator=(vec const& v) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(83): warning #20012-D: __device__ annotation is ignored on a function("qua") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua() = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(83): warning #20012-D: __host__ annotation is ignored on a function("qua") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua() = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(84): warning #20012-D: __device__ annotation is ignored on a function("qua") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua(qua<T, Q> const& q) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(84): warning #20012-D: __host__ annotation is ignored on a function("qua") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua(qua<T, Q> const& q) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(119): warning #20012-D: __device__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua<T, Q>& operator=(qua<T, Q> const& q) = default;
+    		           ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Libraries\include\glm\ext\../detail/type_quat.hpp(119): warning #20012-D: __host__ annotation is ignored on a function("operator=") that is explicitly defaulted on its first declaration
+    		__declspec(__device__) __declspec(__host__)  qua<T, Q>& operator=(qua<T, Q> const& q) = default;
+    		                                  ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Core/App.h(35): error : namespace "std" has no member "optional"
+        std::optional<Shader> cameraShaderProgram;
+             ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Core/App.h(35): error : this declaration has no storage class or type specifier
+        std::optional<Shader> cameraShaderProgram;
+        ^
+  
+D:\Berk\Projects\ScatterX\ScatterX\Core/App.h(35): error : expected a ";"
+        std::optional<Shader> cameraShaderProgram;
+                     ^
+  
+  3 errors detected in the compilation of "D:/Berk/Projects/ScatterX/ScatterX/main.cpp".
+  main.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\BuildCustomizations\CUDA 12.3.targets(799,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\bin\nvcc.exe" -gencode=arch=compute_75,code=\"sm_75,compute_75\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\HostX64\x64" -x cu   -Iimgui -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include"     --keep-dir x64\Release  -maxrregcount=0   --machine 64 --compile -cudart static    -DNDEBUG -D_CONSOLE -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /FS   /MD " -Xcompiler "/Fdx64\Release\vc143.pdb" -o D:\Berk\Projects\ScatterX\ScatterX\x64\Release\main.cpp.obj "D:\Berk\Projects\ScatterX\ScatterX\main.cpp"" exited with code 2.
