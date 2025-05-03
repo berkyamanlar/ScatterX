@@ -1,0 +1,4 @@
+﻿  Renderer.cpp
+D:\Berk\Projects\ScatterX\ScatterX\Core\Renderer.cpp(162,47): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+D:\Berk\Projects\ScatterX\ScatterX\Core\Renderer.cpp(221,79): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  ScatterX.vcxproj -> D:\Berk\Projects\ScatterX\ScatterX\x64\Debug\ScatterX.exe
