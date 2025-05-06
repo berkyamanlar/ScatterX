@@ -1420,6 +1420,7 @@ void Application::Init() {
         glfwTerminate();
         std::exit(-1);
     }
+    glfwSetMouseButtonCallback(window, renderer->m_InputManager.MouseButtonCallback);
 
     // Make the OpenGL context current
     glfwMakeContextCurrent(window);
@@ -2403,6 +2404,12 @@ void Application::drawTitleBar()
     ImVec4 titleColor = ImVec4(0.07f, 0.07f, 0.07f, 1.0f);  // Normal
     ImVec4 titleHoverColor = ImVec4(0.20f, 0.20f, 0.20f, 1.0f);  // Hovered and active
 
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+    ImGui::SetCursorPos(ImVec2(10.0f, 7.0f));
+    ImGui::Text("x=%d y=%d", InputManager::GetMouseX(), InputManager::GetMouseY());
+    ImGui::PopStyleColor();
+
+
     ImGui::PushStyleColor(ImGuiCol_Button, titleColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, titleHoverColor);
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, titleHoverColor);
@@ -2593,6 +2600,7 @@ void Application::MainLoop() {
     static std::string cachedRamUsageStr = "";
     static std::string cachedGpuUsage = "";
     while (!glfwWindowShouldClose(window)) {
+
         // Time tracking
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
@@ -2607,6 +2615,10 @@ void Application::MainLoop() {
         }
 
         glfwPollEvents();
+
+        if (renderer->m_InputManager.m_leftMouseButton.IsPressed) {
+            renderer->drawPickingTexture();
+        }
 
         // Set background color to dark gray for the screen
         glClearColor(0.25f, 0.25f, 0.25f, 1.0f); // Darker gray background for the screen
@@ -2652,6 +2664,7 @@ void Application::MainLoop() {
         if(m_showPerformanceMetrics) this->drawPerformanceMetrics(fps, cachedCpuUsage, cachedRamUsageStr, cachedGpuUsage);
 
         // Title bar
+        InputManager::UpdateMousePosition(window);
         this->drawTitleBar();
 
         // First Right Panel: Scene Collection (40% of screen height)

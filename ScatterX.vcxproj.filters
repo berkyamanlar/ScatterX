@@ -75,6 +75,12 @@
     <ClCompile Include="Core\Mesh.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Core\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PickingTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="main.cpp" />
@@ -125,6 +131,12 @@
     <ClInclude Include="Core\rapidobj.hpp">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PickingTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\default.frag">
@@ -133,5 +145,7 @@
     <None Include="Shaders\default.vert">
       <Filter>Source Files\Shader</Filter>
     </None>
+    <None Include="Shaders\picking.frag" />
+    <None Include="Shaders\picking.vert" />
   </ItemGroup>
 </Project>

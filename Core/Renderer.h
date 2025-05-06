@@ -8,6 +8,8 @@
 #include "shaderClass.h"
 #include "Camera.h"
 #include "Mesh.h"
+#include "InputManager.h"
+#include "PickingTexture.h"
 
 class Renderer {
 public:
@@ -15,15 +17,18 @@ public:
     ~Renderer();
 
     Camera camera;
+    InputManager m_InputManager;
     std::vector<Mesh>sceneCollectionMeshes;
 
     void setupGridLayout();
-    void drawGridLayout();
     void setupSceneCollection();
-
     void setupCoordinateSystem();
+    void setupPickingShader();
+
+    void drawGridLayout();
     void drawCoordinateSystem();
     void drawSceneCollection();
+    void drawPickingTexture();
 
     // Grid
     bool gridNeedsUpdate = false;
@@ -39,4 +44,10 @@ private:
     // Grid
     std::unique_ptr<Shader> gridShaderProgram;
     GLuint VAO_grid, VBO_grid;
+
+    // Picking
+    std::unique_ptr<Shader> pickingShaderProgram;
+    PickingTexture m_pickingTexture;
+    int pickedObjectID = -1;
+    int pickedTriangleID = -1;
 };

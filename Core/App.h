@@ -19,6 +19,7 @@
 
 #include "Camera.h"
 #include "Renderer.h"
+#include "InputManager.h"
 
 enum class MeshType {
     Plane, Cube, Sphere, Cylinder, Disk, Trihedral, Dihedral, Picker, AI
@@ -38,6 +39,7 @@ private:
 
     GLuint LoadTextureFromFile(const char* filename, int* out_width, int* out_height);
     void SetGeometryToOrigin(int meshIndex);
+
     
     // Create mesh objects
     void loadMesh(MeshType type);

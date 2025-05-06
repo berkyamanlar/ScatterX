@@ -1,6 +1,8 @@
 D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\App.obj
 D:\Berk\Projects\ScatterX\ScatterX\Core\Camera.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\Camera.obj
+D:\Berk\Projects\ScatterX\ScatterX\Core\InputManager.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\InputManager.obj
 D:\Berk\Projects\ScatterX\ScatterX\Core\Mesh.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\Mesh.obj
+D:\Berk\Projects\ScatterX\ScatterX\Core\PickingTexture.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\PickingTexture.obj
 D:\Berk\Projects\ScatterX\ScatterX\Core\Renderer.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\Renderer.obj
 D:\Berk\Projects\ScatterX\ScatterX\Core\ShaderClass.cpp;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\ShaderClass.obj
 D:\Berk\Projects\ScatterX\ScatterX\glad.c;D:\Berk\Projects\ScatterX\ScatterX\ScatterX\x64\Debug\glad.obj

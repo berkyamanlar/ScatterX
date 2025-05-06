@@ -6,9 +6,12 @@
 Renderer::Renderer():
     camera(1280, 720)
 {
+    m_pickingTexture.Init(1280, 720);
+
     setupGridLayout();
     setupCoordinateSystem();
     setupSceneCollection();
+    setupPickingShader();
 }
 
 Renderer::~Renderer() {
@@ -96,6 +99,12 @@ void Renderer::setupCoordinateSystem() {
 
     // Load the shader for axes
     axisShaderProgram = std::make_unique<Shader>("shaders/default.vert", "shaders/default.frag");
+}
+
+void Renderer::setupPickingShader()
+{
+    // Create a new shader program for picking
+    pickingShaderProgram = std::make_unique<Shader>("shaders/picking.vert", "shaders/picking.frag");
 }
 
 void Renderer::setupSceneCollection() // This is where we pass layout inputs
@@ -187,42 +196,184 @@ void Renderer::drawCoordinateSystem() {
     glBindVertexArray(0);
 }
 
-void Renderer::drawSceneCollection() // This is where we pass uniform inputs and do model transformations
-{
-    for (int i = 0; i < sceneCollectionMeshes.size(); ++i)
-    {
-        if (sceneCollectionMeshes[i].isVisible)
-        {
+void Renderer::drawSceneCollection() {
+    for (int i = 0; i < sceneCollectionMeshes.size(); ++i) {
+        if (sceneCollectionMeshes[i].isVisible) {
             // Activate the mesh's shader program
             sceneCollectionMeshes[i].objectShaderProgram->Activate();
 
-            // Set polygon mode (wireframe)
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            // Set polygon mode
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-            // Make sure the model matrix is updated with the latest transforms
+            // Update model matrix
             sceneCollectionMeshes[i].UpdateModelMatrix();
-
-            // Get the model matrix
             glm::mat4 modelMatrix = sceneCollectionMeshes[i].GetModelMatrix();
 
             // Pass the model matrix to the shader
             glUniformMatrix4fv(
                 glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "modelMatrix"),
-                1,
-                GL_FALSE,
-                glm::value_ptr(modelMatrix)
+                1, GL_FALSE, glm::value_ptr(modelMatrix)
             );
 
-            // Set the camera matrix (view and projection)
-            camera.Matrix(camera.fov, camera.nearPlane, camera.farPlane, *sceneCollectionMeshes[i].objectShaderProgram, "camMatrix");
+            // Set the camera matrix
+            camera.Matrix(camera.fov, camera.nearPlane, camera.farPlane,
+                *sceneCollectionMeshes[i].objectShaderProgram, "camMatrix");
 
-            // Bind the VAO and draw the mesh using indices
+            // Bind the VAO
             glBindVertexArray(sceneCollectionMeshes[i].VAO_obj);
+
+            // Check if this is the picked object
+            if (i == pickedObjectID) {
+                // Calculate the number of indices and triangles
+                size_t numIndices = sceneCollectionMeshes[i].indices.size();
+                size_t numTriangles = numIndices / 3;
+
+                // Make sure the picked triangle is valid
+                if (pickedTriangleID >= 0 && pickedTriangleID < numTriangles) {
+                    // Set highlight uniform to 0 (not highlighted) for non-picked triangles
+                    glUniform1i(
+                        glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "isHighlighted"),
+                        0
+                    );
+
+                    // Draw the triangles before the picked triangle
+                    if (pickedTriangleID > 0) {
+                        size_t beforeIndices = pickedTriangleID * 3;
+                        glDrawElements(GL_TRIANGLES, beforeIndices, GL_UNSIGNED_INT, 0);
+                    }
+
+                    // Draw the triangles after the picked triangle
+                    if (pickedTriangleID < numTriangles - 1) {
+                        size_t startIndex = (pickedTriangleID + 1) * 3;
+                        size_t afterIndices = numIndices - startIndex;
+                        glDrawElements(GL_TRIANGLES, afterIndices, GL_UNSIGNED_INT,
+                            (void*)(startIndex * sizeof(GLuint)));
+                    }
+
+                    // Now draw the picked triangle with highlighting
+                    glUniform1i(
+                        glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "isHighlighted"),
+                        1
+                    );
+                    glUniform3f(
+                        glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "highlightColor"),
+                        0.0f, 1.0f, 0.0f  // Green highlight
+                    );
+
+                    // Draw just the picked triangle
+                    size_t startIndex = pickedTriangleID * 3;
+                    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT,
+                        (void*)(startIndex * sizeof(GLuint)));
+                }
+                else {
+                    // Invalid triangle ID, draw the whole object
+                    glUniform1i(
+                        glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "isHighlighted"),
+                        0
+                    );
+                    glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+                }
+            }
+            else {
+                // Not the picked object, draw normally
+                glUniform1i(
+                    glGetUniformLocation(sceneCollectionMeshes[i].objectShaderProgram->ID, "isHighlighted"),
+                    0
+                );
+                glDrawElements(GL_TRIANGLES, sceneCollectionMeshes[i].indices.size(), GL_UNSIGNED_INT, 0);
+            }
+
+            glBindVertexArray(0);
+        }
+    }
+}
+
+void Renderer::drawPickingTexture() {
+    // Enable writing to the picking texture
+    m_pickingTexture.EnableWriting();
+
+    // Clear the buffers
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Activate the picking shader
+    pickingShaderProgram->Activate();
+
+    // Set the outputs for the fragment shader - make sure it matches what your FBO supports
+    GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers(1, drawBuffers);
+
+    // Calculate view and projection matrices from the camera
+    glm::mat4 viewMatrix = glm::lookAt(camera.Position, camera.Position + camera.Orientation, camera.Up);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.fov), (float)camera.width / camera.height, camera.nearPlane, camera.farPlane);
+
+    // Set camera view and projection matrices as uniforms
+    glUniformMatrix4fv(
+        glGetUniformLocation(pickingShaderProgram->ID, "viewMatrix"),
+        1, GL_FALSE, glm::value_ptr(viewMatrix)
+    );
+
+    glUniformMatrix4fv(
+        glGetUniformLocation(pickingShaderProgram->ID, "projectionMatrix"),
+        1, GL_FALSE, glm::value_ptr(projectionMatrix)
+    );
+
+    // Draw each mesh in the scene collection with a unique object ID
+    for (int i = 0; i < sceneCollectionMeshes.size(); ++i) {
+        if (sceneCollectionMeshes[i].isVisible) {
+            // Set object index (starting from 1, since 0 is background)
+            glUniform1ui(
+                glGetUniformLocation(pickingShaderProgram->ID, "objectIndex"),
+                i + 1
+            );
+
+            // Set drawing index (using same index for now)
+            glUniform1ui(
+                glGetUniformLocation(pickingShaderProgram->ID, "drawIndex"),
+                i + 1
+            );
+
+            // Update and set the model matrix
+            sceneCollectionMeshes[i].UpdateModelMatrix();
+            glm::mat4 modelMatrix = sceneCollectionMeshes[i].GetModelMatrix();
+
+            // Pass the model matrix to the shader
+            glUniformMatrix4fv(
+                glGetUniformLocation(pickingShaderProgram->ID, "modelMatrix"),
+                1, GL_FALSE, glm::value_ptr(modelMatrix)
+            );
+
+            // Bind the VAO and draw the mesh
+            glBindVertexArray(sceneCollectionMeshes[i].VAO_obj);
+
+            // Draw the elements - primitive IDs are automatically assigned
             glDrawElements(GL_TRIANGLES, sceneCollectionMeshes[i].indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
+        }
+    }
 
-            // Reset polygon mode
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    // Disable writing to the picking texture
+    m_pickingTexture.DisableWriting();
+
+    // If the mouse is clicked, read the pixel to determine which object was clicked
+    if (m_InputManager.m_leftMouseButton.IsPressed) {
+        // Get the window size
+        int width, height;
+        glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
+
+        // Read the pixel at the mouse position
+        PickingTexture::PixelInfo pixel = m_pickingTexture.ReadPixel(
+            m_InputManager.m_leftMouseButton.x,
+            height - m_InputManager.m_leftMouseButton.y - 1  // Convert to OpenGL coordinates
+        );
+
+        // Update the picked object ID and triangle ID
+        if (pixel.ObjectID != 0) {
+            pickedObjectID = pixel.ObjectID - 1;  // Subtract 1 to get back to 0-based index
+            pickedTriangleID = pixel.PrimID;      // Store the primitive (triangle) ID
+        }
+        else {
+            pickedObjectID = -1;  // No object picked
+            pickedTriangleID = -1;  // No triangle picked
         }
     }
 }
