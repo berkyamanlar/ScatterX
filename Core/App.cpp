@@ -1737,6 +1737,8 @@ void Application::drawSceneCollection()
             selectedObjectNameSceneCollection = "Camera & Scene";
             m_showMeshOptions = false;
             m_showSceneOptions = false;
+            renderer->pickedObjectID = -1;
+            renderer->pickedTriangleID = -1;
         }
     }
     else {
@@ -1757,6 +1759,8 @@ void Application::drawSceneCollection()
                     else {
                         m_showMeshOptions = false;
                         m_showSceneOptions = false;
+                        renderer->pickedObjectID = -1;
+                        renderer->pickedTriangleID = -1;
                         // Otherwise, select this object
                         selectedObjectNameSceneCollection = meshName;
                     }
@@ -1822,7 +1826,225 @@ void Application::drawObjectEditor()
 
     ImGui::Begin("Object Editor", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
-    if (selectedObjectNameSceneCollection == "Camera & Scene") {
+    // Check if a triangle is selected
+    if (renderer->pickedObjectID >= 0 && renderer->pickedTriangleID >= 0 &&
+        renderer->pickedObjectID < renderer->sceneCollectionMeshes.size() &&
+        renderer->pickedTriangleID < renderer->sceneCollectionMeshes[renderer->pickedObjectID].triangles.size()) {
+
+        // Deselect selection from the Scene Collection
+        selectedObjectNameSceneCollection = "";
+
+        // Get references to the selected object and triangle
+        const Mesh& selectedObject = renderer->sceneCollectionMeshes[renderer->pickedObjectID];
+        const Triangle& selectedTriangle = selectedObject.triangles[renderer->pickedTriangleID];
+
+        // Add space at the top
+        ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+        // Make title bold and pure white
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+        // Center the text - Triangle Properties
+        const char* title = "Triangle Properties";
+        float windowWidth = ImGui::GetContentRegionAvail().x;
+        float textWidth = ImGui::CalcTextSize(title).x;
+        ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+        ImGui::TextWrapped("%s", title);
+
+        ImGui::PopStyleColor();
+
+        // Add space below the title
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+
+        // Draw a thin separator line
+        ImGui::Separator();
+
+        ImGui::Dummy(ImVec2(0.0f, 8.0f)); // Space after separator
+
+        // Display Object Name - centered
+        {
+            std::string objectName = "Object: " + selectedObject.fileName;
+            float textWidth = ImGui::CalcTextSize(objectName.c_str()).x;
+            float windowWidth = ImGui::GetContentRegionAvail().x;
+            ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+            ImGui::Text("%s", objectName.c_str());
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+
+        // Triangle ID
+        {
+            std::string triangleIdText = std::format("Triangle ID: {}", renderer->pickedTriangleID);
+            float textWidth = ImGui::CalcTextSize(triangleIdText.c_str()).x;
+            float windowWidth = ImGui::GetContentRegionAvail().x;
+            ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+            ImGui::Text("%s", triangleIdText.c_str());
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+
+        // Reflectivity slider
+        ImGui::PushItemWidth(175.0f);
+        ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+
+        // Center the slider and label
+        float sliderWidth = 155.0f;
+        float labelWidth = ImGui::CalcTextSize("Reflectivity").x;
+        float totalWidth = sliderWidth + labelWidth + 5.0f; // 5.0f for some spacing
+        ImGui::SetCursorPosX((windowWidth - totalWidth) * 0.5f);
+
+        // Create a non-const copy of the reflectivity value
+        float reflectivity = selectedTriangle.reflectivity;
+        if (ImGui::SliderFloat("Reflectivity", &reflectivity, 0.0f, 1.0f, "%.2f")) {
+            // Update the reflectivity if changed
+            if (renderer->pickedObjectID >= 0 && renderer->pickedTriangleID >= 0) {
+                Mesh& mesh = renderer->sceneCollectionMeshes[renderer->pickedObjectID];
+                mesh.triangles[renderer->pickedTriangleID].reflectivity = reflectivity;
+            }
+        }
+
+        ImGui::PopStyleColor(3);
+        ImGui::PopItemWidth();
+
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+
+        // Normal vector display - centered
+        {
+            std::string normalLabel = "Normal:";
+            float labelWidth = ImGui::CalcTextSize(normalLabel.c_str()).x;
+            ImGui::SetCursorPosX((windowWidth - labelWidth) * 0.5f);
+            ImGui::TextWrapped("%s", normalLabel.c_str());
+        }
+
+        {
+            // Calculate width to center the entire expression
+            char normalStr[64];
+            snprintf(normalStr, sizeof(normalStr), "(%.3f, %.3f, %.3f)",
+                selectedTriangle.normal.x, selectedTriangle.normal.y, selectedTriangle.normal.z);
+            float textWidth = ImGui::CalcTextSize(normalStr).x;
+            ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+            // Draw opening parenthesis
+            ImGui::Text("(");
+            ImGui::SameLine(0, 0);
+
+            // X component (red)
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 100, 100, 255));
+            ImGui::Text("%.3f", selectedTriangle.normal.x);
+            ImGui::PopStyleColor();
+            ImGui::SameLine(0, 0);
+
+            // Comma separator
+            ImGui::Text(", ");
+            ImGui::SameLine(0, 0);
+
+            // Y component (green)
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 255, 100, 255));
+            ImGui::Text("%.3f", selectedTriangle.normal.y);
+            ImGui::PopStyleColor();
+            ImGui::SameLine(0, 0);
+
+            // Comma separator
+            ImGui::Text(", ");
+            ImGui::SameLine(0, 0);
+
+            // Z component (blue)
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 100, 255, 255));
+            ImGui::Text("%.3f", selectedTriangle.normal.z);
+            ImGui::PopStyleColor();
+            ImGui::SameLine(0, 0);
+
+            // Closing parenthesis
+            ImGui::Text(")");
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+        ImGui::Separator();
+        ImGui::Dummy(ImVec2(0.0f, 8.0f));
+
+        // Display vertex positions - centered header
+        {
+            std::string vertLabel = "Vertex Positions:";
+            float labelWidth = ImGui::CalcTextSize(vertLabel.c_str()).x;
+            ImGui::SetCursorPosX((windowWidth - labelWidth) * 0.5f);
+            ImGui::TextWrapped("%s", vertLabel.c_str());
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 4.0f));
+
+        // Get the vertices of the triangle
+        for (int i = 0; i < 3; i++) {
+            GLuint vertexIndex = selectedTriangle.indices[i];
+
+            // Ensure the vertex index is valid
+            if (vertexIndex < selectedObject.vertices.size()) {
+                const glm::vec3& vertexPos = selectedObject.vertices[vertexIndex].position;
+
+                // Vertex number - centered
+                {
+                    char vertexLabel[16];
+                    snprintf(vertexLabel, sizeof(vertexLabel), "Vertex %d:", i + 1);
+                    float labelWidth = ImGui::CalcTextSize(vertexLabel).x;
+                    ImGui::SetCursorPosX((windowWidth - labelWidth) * 0.5f);
+                    ImGui::Text("%s", vertexLabel);
+                }
+
+                // Format position as a vector with colored components
+                {
+                    // Calculate width to center the entire expression
+                    char posStr[64];
+                    snprintf(posStr, sizeof(posStr), "(%.3f, %.3f, %.3f)",
+                        vertexPos.x, vertexPos.y, vertexPos.z);
+                    float textWidth = ImGui::CalcTextSize(posStr).x;
+                    ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+                    // Draw opening parenthesis
+                    ImGui::Text("(");
+                    ImGui::SameLine(0, 0);
+
+                    // X component (red)
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 100, 100, 255));
+                    ImGui::Text("%.3f", vertexPos.x);
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0);
+
+                    // Comma separator
+                    ImGui::Text(", ");
+                    ImGui::SameLine(0, 0);
+
+                    // Y component (green)
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 255, 100, 255));
+                    ImGui::Text("%.3f", vertexPos.y);
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0);
+
+                    // Comma separator
+                    ImGui::Text(", ");
+                    ImGui::SameLine(0, 0);
+
+                    // Z component (blue)
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 100, 255, 255));
+                    ImGui::Text("%.3f", vertexPos.z);
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0);
+
+                    // Closing parenthesis
+                    ImGui::Text(")");
+                }
+
+                if (i < 2) {
+                    ImGui::Dummy(ImVec2(0.0f, 4.0f));
+                }
+            }
+        }
+    }
+    else if (selectedObjectNameSceneCollection == "Camera & Scene") {
         // Camera settings
         // Add space at the top
         ImGui::Dummy(ImVec2(0.0f, 10.0f));

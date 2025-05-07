@@ -36,6 +36,10 @@ public:
     float divisions = 150.0f;
     float step;
 
+    // Picking
+    int pickedObjectID = -1;
+    int pickedTriangleID = -1;
+
 private:
     // Coordinate system
     std::unique_ptr<Shader> axisShaderProgram;
@@ -48,6 +52,4 @@ private:
     // Picking
     std::unique_ptr<Shader> pickingShaderProgram;
     PickingTexture m_pickingTexture;
-    int pickedObjectID = -1;
-    int pickedTriangleID = -1;
 };

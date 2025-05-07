@@ -156,6 +156,7 @@ void Mesh::LoadObjectModelFromDisk(const std::string& Path)
                 uniqueVertices.emplace(vdata, newIndex);
                 vertices.push_back({ position, color });
                 indices.push_back(newIndex);
+
             }
             else {
                 // Use existing vertex
@@ -165,7 +166,8 @@ void Mesh::LoadObjectModelFromDisk(const std::string& Path)
     }
     this->numTriangles = indices.size() / 3;
     this->modelMemoryMB = (vertices.size() * sizeof(Vertex) + indices.size() * sizeof(GLuint)) / (1024.0 * 1024.0);
-    CalculateDimensions();
+    this->UpdateTriangleData();
+    this->CalculateDimensions();
     std::cout << "Object " << this->fileName << " created." << std::endl;
 }
 
@@ -215,5 +217,31 @@ std::string Mesh::extractFilename(const std::string& path) {
     return path.substr(lastSlash + 1);
 }
 
+void Mesh::UpdateTriangleData()
+{
+    triangles.clear();
+    triangles.reserve(indices.size() / 3);
 
+    // Create a triangle object for each triangle in the mesh
+    for (size_t i = 0; i < indices.size(); i += 3) {
+        Triangle tri(indices[i], indices[i + 1], indices[i + 2]);
 
+        // Calculate triangle center
+        const glm::vec3& v1 = vertices[indices[i]].position;
+        const glm::vec3& v2 = vertices[indices[i + 1]].position;
+        const glm::vec3& v3 = vertices[indices[i + 2]].position;
+
+        // Calculate triangle normal
+        glm::vec3 edge1 = v2 - v1;
+        glm::vec3 edge2 = v3 - v1;
+        tri.normal = glm::normalize(glm::cross(edge1, edge2));
+
+        triangles.push_back(tri);
+    }
+}
+
+void Mesh::SetTriangleSelected(size_t triangleIndex, bool selection)
+{
+    if (triangleIndex >= triangles.size()) return;
+    this->triangles[triangleIndex].selected = selection;
+}

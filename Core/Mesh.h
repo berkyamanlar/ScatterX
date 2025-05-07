@@ -17,7 +17,25 @@ struct Vertex
 {
 	glm::vec3 position;
 	glm::vec3 color;
+};
+
+struct Triangle {
+	// Triangle face properties
+	float reflectivity = 1.0f;
 	bool selected = false;
+	glm::vec3 normal = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	// Vertex indices that make up this triangle
+	GLuint indices[3];
+
+	// Constructor for easy initialization from indices
+	Triangle(GLuint i1, GLuint i2, GLuint i3) {
+		indices[0] = i1;
+		indices[1] = i2;
+		indices[2] = i3;
+	}
+
+	Triangle() = default;
 };
 
 class Mesh
@@ -35,7 +53,10 @@ public:
 	void LoadObjectModelFromDisk(const std::string& Path);
 	void CalculateDimensions();
 	std::string extractFilename(const std::string& path);
+	void UpdateTriangleData();
+	void SetTriangleSelected(size_t triangleIndex, bool selection);
 
+	std::vector<Triangle> triangles;
 	std::vector <Vertex> vertices;
 	std::vector <GLuint> indices;
 	

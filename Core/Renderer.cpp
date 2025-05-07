@@ -368,12 +368,39 @@ void Renderer::drawPickingTexture() {
 
         // Update the picked object ID and triangle ID
         if (pixel.ObjectID != 0) {
+            // Store the previous selections
+            int prevObjectID = pickedObjectID;
+            int prevTriangleID = pickedTriangleID;
+
+            // Update the current selections
             pickedObjectID = pixel.ObjectID - 1;  // Subtract 1 to get back to 0-based index
             pickedTriangleID = pixel.PrimID;      // Store the primitive (triangle) ID
+
+            // If we have a valid selection, update the triangle's properties
+            if (pickedObjectID >= 0 && pickedObjectID < sceneCollectionMeshes.size()) {
+                Mesh& mesh = sceneCollectionMeshes[pickedObjectID];
+
+                // Clear previous selection if it exists
+                if (prevObjectID >= 0 && prevObjectID < sceneCollectionMeshes.size() &&
+                    prevTriangleID >= 0 && prevTriangleID < sceneCollectionMeshes[prevObjectID].triangles.size()) {
+                    sceneCollectionMeshes[prevObjectID].SetTriangleSelected(prevTriangleID, false);
+                }
+
+                // Set new selection
+                if (pickedTriangleID >= 0 && pickedTriangleID < mesh.triangles.size()) {
+                    mesh.SetTriangleSelected(pickedTriangleID, true);
+                    }
+                }
+            }
         }
         else {
+            // Clear selection if clicking on background
+            if (pickedObjectID >= 0 && pickedObjectID < sceneCollectionMeshes.size() &&
+                pickedTriangleID >= 0 && pickedTriangleID < sceneCollectionMeshes[pickedObjectID].triangles.size()) {
+                sceneCollectionMeshes[pickedObjectID].SetTriangleSelected(pickedTriangleID, false);
+            }
+
             pickedObjectID = -1;  // No object picked
             pickedTriangleID = -1;  // No triangle picked
         }
-    }
 }
