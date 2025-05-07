@@ -1923,10 +1923,14 @@ void Application::drawObjectEditor()
         }
 
         {
+            // Transform the normal using the inverse transpose of the 3x3 part of model matrix
+            glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(selectedObject.GetModelMatrix())));
+            glm::vec3 transformedNormal = glm::normalize(normalMatrix * selectedTriangle.normal);
+
             // Calculate width to center the entire expression
             char normalStr[64];
             snprintf(normalStr, sizeof(normalStr), "(%.3f, %.3f, %.3f)",
-                selectedTriangle.normal.x, selectedTriangle.normal.y, selectedTriangle.normal.z);
+                transformedNormal.x, transformedNormal.y, transformedNormal.z);
             float textWidth = ImGui::CalcTextSize(normalStr).x;
             ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 
@@ -1936,7 +1940,7 @@ void Application::drawObjectEditor()
 
             // X component (red)
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 100, 100, 255));
-            ImGui::Text("%.3f", selectedTriangle.normal.x);
+            ImGui::Text("%.3f", transformedNormal.x);
             ImGui::PopStyleColor();
             ImGui::SameLine(0, 0);
 
@@ -1946,7 +1950,7 @@ void Application::drawObjectEditor()
 
             // Y component (green)
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 255, 100, 255));
-            ImGui::Text("%.3f", selectedTriangle.normal.y);
+            ImGui::Text("%.3f", transformedNormal.y);
             ImGui::PopStyleColor();
             ImGui::SameLine(0, 0);
 
@@ -1956,7 +1960,7 @@ void Application::drawObjectEditor()
 
             // Z component (blue)
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 100, 255, 255));
-            ImGui::Text("%.3f", selectedTriangle.normal.z);
+            ImGui::Text("%.3f", transformedNormal.z);
             ImGui::PopStyleColor();
             ImGui::SameLine(0, 0);
 
@@ -1986,6 +1990,9 @@ void Application::drawObjectEditor()
             if (vertexIndex < selectedObject.vertices.size()) {
                 const glm::vec3& vertexPos = selectedObject.vertices[vertexIndex].position;
 
+                // Transform the vertex position with the model matrix
+                glm::vec4 transformedPos = selectedObject.GetModelMatrix() * glm::vec4(vertexPos, 1.0f);
+
                 // Vertex number - centered
                 {
                     char vertexLabel[16];
@@ -2000,7 +2007,7 @@ void Application::drawObjectEditor()
                     // Calculate width to center the entire expression
                     char posStr[64];
                     snprintf(posStr, sizeof(posStr), "(%.3f, %.3f, %.3f)",
-                        vertexPos.x, vertexPos.y, vertexPos.z);
+                        transformedPos.x, transformedPos.y, transformedPos.z);
                     float textWidth = ImGui::CalcTextSize(posStr).x;
                     ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 
@@ -2010,7 +2017,7 @@ void Application::drawObjectEditor()
 
                     // X component (red)
                     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 100, 100, 255));
-                    ImGui::Text("%.3f", vertexPos.x);
+                    ImGui::Text("%.3f", transformedPos.x);
                     ImGui::PopStyleColor();
                     ImGui::SameLine(0, 0);
 
@@ -2020,7 +2027,7 @@ void Application::drawObjectEditor()
 
                     // Y component (green)
                     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 255, 100, 255));
-                    ImGui::Text("%.3f", vertexPos.y);
+                    ImGui::Text("%.3f", transformedPos.y);
                     ImGui::PopStyleColor();
                     ImGui::SameLine(0, 0);
 
@@ -2030,7 +2037,7 @@ void Application::drawObjectEditor()
 
                     // Z component (blue)
                     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(100, 100, 255, 255));
-                    ImGui::Text("%.3f", vertexPos.z);
+                    ImGui::Text("%.3f", transformedPos.z);
                     ImGui::PopStyleColor();
                     ImGui::SameLine(0, 0);
 
