@@ -40,6 +40,9 @@ public:
     int pickedObjectID = -1;
     int pickedTriangleID = -1;
 
+    // Display mode
+    bool isWireframeMode = false;
+
 private:
     // Coordinate system
     std::unique_ptr<Shader> axisShaderProgram;

@@ -39,7 +39,7 @@ private:
 
     GLuint LoadTextureFromFile(const char* filename, int* out_width, int* out_height);
     void SetGeometryToOrigin(int meshIndex);
-
+    void drawDisplayModePanel();
     
     // Create mesh objects
     void loadMesh(MeshType type);
@@ -91,6 +91,7 @@ private:
     bool m_showAxisOrientation = true;
     bool m_showSceneInspector = true;
     bool m_showPerformanceMetrics = true;
+    bool m_showDisplayMode = true;
 
     // Inside mesh options
     int m_LOD = 10;         // Level of detail (grid size)

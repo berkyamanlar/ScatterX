@@ -202,8 +202,8 @@ void Renderer::drawSceneCollection() {
             // Activate the mesh's shader program
             sceneCollectionMeshes[i].objectShaderProgram->Activate();
 
-            // Set polygon mode
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            // Set mode
+            glPolygonMode(GL_FRONT_AND_BACK, this->isWireframeMode ? GL_LINE : GL_FILL);
 
             // Update model matrix
             sceneCollectionMeshes[i].UpdateModelMatrix();

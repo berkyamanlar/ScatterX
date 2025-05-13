@@ -1,4 +1,4 @@
 ﻿  App.cpp
-D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp(2536,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp(2834,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp(2596,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Berk\Projects\ScatterX\ScatterX\Core\App.cpp(2899,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   ScatterX.vcxproj -> D:\Berk\Projects\ScatterX\ScatterX\x64\Debug\ScatterX.exe

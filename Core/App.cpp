@@ -98,6 +98,59 @@ void Application::SetGeometryToOrigin(int meshIndex)
     mesh.UpdateModelMatrix();
 }
 
+void Application::drawDisplayModePanel()
+{
+    ImVec2 windowPos(10, 200); // Between the other two panels
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_FirstUseEver);
+
+    ImVec2 windowSize(300, 120);
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoResize;
+
+    // Apply window color styling
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+    // Apply checkbox/tick styling
+    ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)); // White tick
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f)); // Normal
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.22f, 0.22f, 0.22f, 1.0f)); // Hover
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.25f, 0.25f, 0.25f, 1.0f)); // Active
+
+    ImGui::Begin("Display Mode", nullptr, windowFlags);
+
+    bool isWireframe = renderer->isWireframeMode;
+    bool isTextured = !isWireframe;
+
+    ImGui::Text("Rendering Options:");
+
+    // Layout side-by-side checkboxes
+    ImGui::PushID("Wireframe");
+    if (ImGui::Checkbox("Wireframe", &isWireframe))
+    {
+        renderer->isWireframeMode = true;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    ImGui::PopID();
+
+    ImGui::SameLine();
+
+    ImGui::PushID("Textured");
+    if (ImGui::Checkbox("Textured", &isTextured))
+    {
+        renderer->isWireframeMode = false;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+    ImGui::PopID();
+
+    ImGui::End();
+
+    // Pop all 7 styles
+    ImGui::PopStyleColor(7);
+}
+
 void Application::loadMesh(MeshType type) {
     switch (type) {
     case MeshType::Plane:
@@ -2583,6 +2636,7 @@ void Application::renderObjectSelectionWindow()
             if (ImGui::Button("Load", ImVec2(buttonWidth, 30))) {
                 m_showMeshOptions = false;
                 m_showSceneOptions = false;
+
                 renderer->sceneCollectionMeshes.push_back(std::move(tempMesh));
                 renderer->setupSceneCollection();
                 selectedItemPathContentBrowser = ""; // Close popup
@@ -2710,6 +2764,9 @@ void Application::drawTitleBar()
             // Performance Metrics checkbox
             ImGui::Checkbox("Performance Metrics", &m_showPerformanceMetrics);
 
+            // Display mode checkbox
+            ImGui::Checkbox("Display Mode", &m_showDisplayMode);
+
             ImGui::End(); // End the child window
         }
 
@@ -2828,6 +2885,7 @@ void Application::MainLoop() {
     static float lastCpuQueryTime = 0.0f;
     static std::string cachedRamUsageStr = "";
     static std::string cachedGpuUsage = "";
+
     while (!glfwWindowShouldClose(window)) {
 
         // Time tracking
@@ -2919,6 +2977,9 @@ void Application::MainLoop() {
 
         // Render mesh creator
         this->renderMeshCreator();
+
+        // Display mode panel
+        if(m_showDisplayMode) this->drawDisplayModePanel();
 
         // Render ImGui UI
         ImGui::Render();
